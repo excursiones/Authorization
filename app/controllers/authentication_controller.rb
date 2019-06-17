@@ -7,7 +7,7 @@ class AuthenticationController < ApplicationController
 
     email = auth_params[:email]
     password = auth_params[:password]
-    ldap.auth "cn=#{email},ou=excursions,dc=excursions,dc=com", "#{password}"
+    ldap.authenticate 'cn=admin,dc=excursions,dc=com', 'admin'
     result = ldap.bind_as(
       base: "ou=excursions,dc=excursions,dc=com",
       filter: "(cn=#{email})",
