@@ -17,7 +17,10 @@ gem 'puma', '~> 3.11'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'net-ldap', '~> 0.15.0'
 # Use ActiveStorage variant
-# gem 'mini_magick', '~> 4.8'
+# gem 'mini_magick', '~> 4. 8'
+
+gem 'knock'
+gem 'bcrypt'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
