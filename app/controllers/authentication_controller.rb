@@ -1,13 +1,23 @@
 class AuthenticationController < ApplicationController
   def sign_in
+    
     ldap = Net::LDAP.new
     ldap.host = '3.13.112.89'
     ldap.port = 389
-    ldap.auth "cn=ccgomezn@unal.edu.co,ou=excursions,dc=excursions,dc=com", "0506Gfcgfc123"
-    if ldap.bind
-      p "yes"
+
+    email = auth_params[:email]
+    password = auth_params[:password]
+    ldap.auth "cn=#{email},ou=excursions,dc=excursions,dc=com", "#{password}"
+    result = ldap.bind_as(
+      base: "ou=excursions,dc=excursions,dc=com",
+      filter: "(cn=#{email})",
+      password: password
+    )
+    Rails.logger.info("ldap.search: #{ldap.get_operation_result}")
+    if result
+      render json: result
     else
-      p "no"
+      render status: :unauthorized
     end
   end
 
@@ -29,6 +39,11 @@ class AuthenticationController < ApplicationController
 
     ldap.add(:dn => dn, :attributes => attr)
     Rails.logger.info("ldap.add: #{ldap.get_operation_result}")
-
   end
+
+  private
+
+    def auth_params
+      params.require(:auth).permit(:email, :password)
+    end
 end
