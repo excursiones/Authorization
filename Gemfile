@@ -21,12 +21,15 @@ gem 'net-ldap', '~> 0.15.0'
 
 gem 'knock'
 gem 'bcrypt'
+# gem 'mini_magick', '~> 4.8'
+gem 'parser', '2.4.0.2'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
+gem 'iconv'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
