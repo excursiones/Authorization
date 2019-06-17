@@ -27,14 +27,17 @@ class AuthenticationController < ApplicationController
         ldap.port = 389
         ldap.authenticate 'cn=admin,dc=excursions,dc=com', 'admin'        
     ldap.bind
-    dn = "cn=gfcristhian2@unal.edu.co,ou=excursions,dc=excursions,dc=com"
+    email = auth_params[:email]
+    password = auth_params[:password]
+    name = reg_params[:name]
+    dn = "cn=#{email},ou=excursions,dc=excursions,dc=com"
 
     attr = {
-      :cn => "gfcristhian2@unal.edu.co",
+      :cn => "#{email}",
       :objectclass => ["top", "inetorgperson"],
-      :sn => "Smith",
-      :mail => "gfcristhian2@unal.edu.co",
-      :userPassword => '0506Gfcgfc123'
+      :sn => "#{name}",
+      :mail => "#{email}",
+      :userPassword => "#{password}"
     }
 
     ldap.add(:dn => dn, :attributes => attr)
@@ -45,5 +48,9 @@ class AuthenticationController < ApplicationController
 
     def auth_params
       params.require(:auth).permit(:email, :password)
+    end
+
+    def reg_params
+      params.require(:registratin).permit(:email, :password, :name)
     end
 end
