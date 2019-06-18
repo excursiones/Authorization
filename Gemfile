@@ -20,7 +20,7 @@ gem 'net-ldap', '~> 0.15.0'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4. 8'
 gem 'jwt'
-
+gem 'rack-cors', '~> 0.4.0'
 gem 'knock'
 gem 'bcrypt'
 # gem 'mini_magick', '~> 4.8'
