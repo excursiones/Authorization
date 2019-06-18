@@ -15,7 +15,10 @@ class AuthenticationController < ApplicationController
     )
     Rails.logger.info("ldap.search: #{ldap.get_operation_result}")
     if result
-      render json: result
+      token = Knock::AuthToken.new(payload: { id: result[0]['uidnumber'],
+                                               email: result[0]['uid'], 
+                                               type: result[0]['gidnumber'] }).token
+      render json: {token: token}
     else
       render status: :unauthorized
     end
