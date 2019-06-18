@@ -1,11 +1,4 @@
 class AuthenticationController < ApplicationController
-  
-  def generate_token
-    token = Knock::AuthToken.new(payload: { id: @result[0]['uidnumber'],
-                                               email: @result[0]['uid'], 
-                                               type: @result[0]['gidnumber'] }).token
-    render json: {token: token}
-  end
 
   def sign_in
     ldap = Net::LDAP.new
@@ -54,9 +47,27 @@ class AuthenticationController < ApplicationController
     Rails.logger.info("ldap.add: #{ldap.get_operation_result}")
   end
 
+  def authorize
+    JWT.decode(auth_params[:token], Rails.application.secrets.secret_key_base, { algorithm: 'HS256' })
+    render status: 200
+  rescue JWT::DecodeError, JWT::VerificationError => e
+    render status: :unauthorized
+  end
+
   private
 
     def auth_params
-      params.require(:auth).permit(:email, :password, :name)
+      params.require(:auth).permit(:email, :password, :name, :token)
     end
+
+
+    def generate_token
+    payload= { id: @result[0]['uidnumber'],
+               email: @result[0]['uid'], 
+               type: @result[0]['gidnumber'],
+               exp: 24.hours.from_now.to_i }
+    token = JWT.encode(payload, Rails.application.secrets.secret_key_base)
+
+    render json: {token: token}
+  end
 end

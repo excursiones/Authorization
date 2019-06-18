@@ -86,6 +86,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     parser (2.4.0.2)
       ast (~> 2.3)
+    pg (1.1.4)
     puma (3.12.1)
     rack (2.0.7)
     rack-test (1.1.0)
@@ -148,10 +149,12 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
   iconv
+  jwt
   knock
   listen (>= 3.0.5, < 3.2)
   net-ldap (~> 0.15.0)
   parser (= 2.4.0.2)
+  pg (>= 0.18, < 2.0)
   puma (~> 3.11)
   rails (~> 5.2.0)
   spring
@@ -160,7 +163,7 @@ DEPENDENCIES
   tzinfo-data
 
 RUBY VERSION
-   ruby 2.6.3
+   ruby 2.3.5p376
 
 BUNDLED WITH
    1.17.3
