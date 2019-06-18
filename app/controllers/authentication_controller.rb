@@ -30,13 +30,14 @@ class AuthenticationController < ApplicationController
     password = auth_params[:password]
     name = auth_params[:name]
     dn = "cn=#{email},ou=excursions,dc=excursions,dc=com"
-
+    uid =rand(100000)
     attr = {
       :cn => "#{email}",
       :objectclass => ["top", "inetorgperson"],
       :sn => "#{name}",
       :mail => "#{email}",
-      :userPassword => "#{password}"
+      :userPassword => "#{password}",
+      :uid => "#{uid}"
     }
 
     if ldap.add(:dn => dn, :attributes => attr)
@@ -62,8 +63,8 @@ class AuthenticationController < ApplicationController
 
 
     def generate_token
-    payload= { id: @result[0]['uidnumber'],
-               email: @result[0]['uid'], 
+    payload= { id: @result[0]['uid'],
+               email: @result[0]['mail'], 
                type: @result[0]['gidnumber'],
                exp: 24.hours.from_now.to_i }
     token = JWT.encode(payload, Rails.application.secrets.secret_key_base)
